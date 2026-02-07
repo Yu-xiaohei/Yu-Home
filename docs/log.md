@@ -10,3 +10,5 @@
 [26-02-07 16:17] [新增] 创建 test/index.html 用于验证 Chrome DevTools MCP
 [26-02-07 16:35] [配置] 设置 git user.email 为 cj_xiaohei@163.com
 [26-02-07 16:35] [新增] 创建标准 .gitignore 文件
+[26-02-07 16:55] [配置] 关联远程仓库 https://github.com/Yu-xiaohei/Yu-Home.git
+[26-02-07 16:55] [新增] 添加 MIT License
