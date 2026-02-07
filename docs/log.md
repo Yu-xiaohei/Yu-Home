@@ -12,3 +12,5 @@
 [26-02-07 16:35] [新增] 创建标准 .gitignore 文件
 [26-02-07 16:55] [配置] 关联远程仓库 https://github.com/Yu-xiaohei/Yu-Home.git
 [26-02-07 16:55] [新增] 添加 MIT License
+[26-02-07 17:00] [提交] 推送代码到 GitHub Yu-Home 仓库
+[26-02-07 17:00] [重构] 重命名项目文件夹 Yu-WEB -> Yu-Home
