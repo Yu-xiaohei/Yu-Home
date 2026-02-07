@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrome DevTools MCP 测试页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        p {
+            color: #a0a0a0;
+            margin-bottom: 2rem;
+        }
+        
+        .counter {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #00d2ff;
+            margin: 2rem 0;
+            text-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            color: #fff;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            color: #fff;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .log-section {
+            margin-top: 2rem;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .log-section h3 {
+            color: #00d2ff;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        #log {
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .log-entry {
+            padding: 0.2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Chrome DevTools MCP 测试</h1>
+        <p>此页面用于验证 AI 是否能够通过 Chrome DevTools 与浏览器交互</p>
+        
+        <div class="counter" id="counter">0</div>
+        
+        <div class="btn-group">
+            <button class="btn-primary" id="increment">➕ 增加</button>
+            <button class="btn-secondary" id="decrement">➖ 减少</button>
+            <button class="btn-danger" id="reset">🔄 重置</button>
+        </div>
+        
+        <div class="log-section">
+            <h3>📋 操作日志</h3>
+            <div id="log"></div>
+        </div>
+    </div>
+
+    <script>
+        let count = 0;
+        const counterEl = document.getElementById('counter');
+        const logEl = document.getElementById('log');
+        
+        function log(message) {
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = `[${time}] ${message}`;
+            logEl.insertBefore(entry, logEl.firstChild);
+            console.log(`[${time}] ${message}`);
+        }
+        
+        function updateCounter() {
+            counterEl.textContent = count;
+            counterEl.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                counterEl.style.transform = 'scale(1)';
+            }, 100);
+        }
+        
+        document.getElementById('increment').addEventListener('click', () => {
+            count++;
+            updateCounter();
+            log(`计数器增加到 ${count}`);
+        });
+        
+        document.getElementById('decrement').addEventListener('click', () => {
+            count--;
+            updateCounter();
+            log(`计数器减少到 ${count}`);
+        });
+        
+        document.getElementById('reset').addEventListener('click', () => {
+            count = 0;
+            updateCounter();
+            log('计数器已重置');
+        });
+        
+        // 页面加载日志
+        log('页面加载完成 - Chrome DevTools MCP 测试就绪');
+        
+        // 暴露全局函数供 DevTools 调用
+        window.setCounter = function(value) {
+            count = parseInt(value) || 0;
+            updateCounter();
+            log(`计数器被设置为 ${count} (通过 DevTools)`);
+            return `计数器已设置为 ${count}`;
+        };
+        
+        window.getCounter = function() {
+            return count;
+        };
+    </script>
+</body>
+</html>
